@@ -1,6 +1,5 @@
-package jekirdek.com.t3mobil.actitiyes;
+package jekirdek.com.t3mobil.activityes;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -13,12 +12,13 @@ import jekirdek.com.t3mobil.R;
 /**
  * Created by cem
  */
-public class BilgilerFragment extends Fragment {
+public class DersKatilimFragment extends Fragment {
 
 
+    @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_bilgilerim, container, false);
+        return inflater.inflate(R.layout.fragment_ders_katilim, container, false);
     }
 
     @Override
@@ -26,4 +26,5 @@ public class BilgilerFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
     }
+
 }

@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import jekirdek.com.t3mobil.actitiyes.BilgilerFragment;
-import jekirdek.com.t3mobil.actitiyes.DersKatilimFragment;
-import jekirdek.com.t3mobil.actitiyes.YoklamaListesiFragment;
+import jekirdek.com.t3mobil.activityes.BilgilerFragment;
+import jekirdek.com.t3mobil.activityes.DersKatilimFragment;
+import jekirdek.com.t3mobil.activityes.YoklamaListesiFragment;
 
 /**
  * Created by cem

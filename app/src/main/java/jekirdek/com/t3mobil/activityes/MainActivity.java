@@ -1,4 +1,4 @@
-package jekirdek.com.t3mobil.actitiyes;
+package jekirdek.com.t3mobil.activityes;
 
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
@@ -17,7 +17,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager viewPager;
     private DrawerLayout drawer;
     private TabLayout tabLayout;
-    private String[] pageTitle = {"Yoklama Listesi", "Öğrenci Ders Katılımı", "Bilgiler"};
+    private String[] pageTitle = {"Yoklama Listesi", "Öğrenci Ders Katılımı", "Bilgilerim"};
+    private int[] tabIcons = {R.drawable.ic_assignment_turned_in_black_24dp,R.drawable.ic_insert_chart_black_24dp,R.drawable.ic_person_black_24dp};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +27,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
         drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
-//        setSupportActionBar(toolbar);
-
-        //ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-      //  drawer.addDrawerListener(toggle);
-       // toggle.syncState();
 
         tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         for (int i = 0; i < 3; i++) {
@@ -39,18 +35,12 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-       // NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view_order);
-      //  assert navigationView != null;
-      //  navigationView.setNavigationItemSelectedListener(this);
-
-        //set viewpager adapter
-
         ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(pagerAdapter);
 //
         //change Tab selection when swipe ViewPager
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
-
+        setupTabIcons();
         //change ViewPager page when tab selected
         tabLayout.setOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
@@ -68,6 +58,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+    }
+    private void setupTabIcons() {
+        tabLayout.getTabAt(0).setIcon(tabIcons[0]);
+        tabLayout.getTabAt(1).setIcon(tabIcons[1]);
+        tabLayout.getTabAt(2).setIcon(tabIcons[2]);
     }
 
     @Override

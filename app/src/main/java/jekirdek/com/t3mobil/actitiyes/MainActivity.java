@@ -1,18 +1,16 @@
 package jekirdek.com.t3mobil.actitiyes;
 
-import android.content.Intent;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 
 import jekirdek.com.t3mobil.R;
+import jekirdek.com.t3mobil.adapter.ViewPagerAdapter;
+
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -27,7 +25,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setContentView(R.layout.activity_main);
 
         viewPager = (ViewPager) findViewById(R.id.view_pager);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         drawer = (DrawerLayout) findViewById(R.id.drawerLayout);
 //        setSupportActionBar(toolbar);
 
@@ -47,8 +44,9 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
       //  navigationView.setNavigationItemSelectedListener(this);
 
         //set viewpager adapter
-        //ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
-       // viewPager.setAdapter(pagerAdapter);
+
+        ViewPagerAdapter pagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(pagerAdapter);
 //
         //change Tab selection when swipe ViewPager
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));

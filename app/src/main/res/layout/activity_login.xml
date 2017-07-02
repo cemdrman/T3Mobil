@@ -29,7 +29,7 @@
         android:hint="Şifre"
         android:inputType="textPassword" />
     <Button
-        android:id="@+id/giris"
+        android:id="@+id/btnGiris"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/password"

@@ -29,6 +29,16 @@ public class LoginActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        Button btnGiris = (Button)findViewById(R.id.btnGiris);
+        btnGiris.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent ıntent = new Intent(LoginActivity.this,MainActivity.class );
+                startActivity(ıntent);
+            }
+        });
+
         init();
      /*   if (tokenDB.getRowCount() > 0) {
             System.out.println();
@@ -62,7 +72,7 @@ public class LoginActivity extends Activity {
     private void init(){
         txtEmail = (EditText) findViewById(R.id.email);
         txtSifre = (EditText) findViewById(R.id.password);
-        btnGiris = (Button) findViewById(R.id.giris);
+
         //tokenDB = new TokenDB(getApplicationContext());
     }
 }

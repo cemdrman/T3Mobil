@@ -8,7 +8,7 @@ public class User {
     private int id;
     private String name;
     private String surname;
-    private Gender gender;
+    private String gender;
     private String email;
     private String password;
     private String phoneNumber;
@@ -42,11 +42,11 @@ public class User {
         this.surname = surname;
     }
 
-    public Gender getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Gender gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 
@@ -112,5 +112,23 @@ public class User {
 
     public void setGrade(String grade) {
         this.grade = grade;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", gender=" + gender +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", userType=" + userType +
+                ", schoolName='" + schoolName + '\'' +
+                ", section='" + section + '\'' +
+                ", clas='" + clas + '\'' +
+                ", grade='" + grade + '\'' +
+                '}';
     }
 }

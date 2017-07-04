@@ -6,14 +6,22 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 
 import jekirdek.com.t3mobil.R;
+import jekirdek.com.t3mobil.database.BilgilerDB;
+import jekirdek.com.t3mobil.model.User;
 
 /**
  * Created by cem
  */
 public class BilgilerFragment extends Fragment {
 
+    private EditText txtAdSoyad;
+    private EditText txtTelNo;
+    private EditText txtEmail;
+    private EditText txtSifre;
+    private EditText txtTcNo;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -23,6 +31,17 @@ public class BilgilerFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init(view);
+        BilgilerDB bilgilerDB = new BilgilerDB(getContext());
+        User user = bilgilerDB.getUser();
+        txtAdSoyad.setText(user.getName() + " " + user.getSurname());
+    }
 
+    private void init(View view){
+        txtAdSoyad = (EditText)view.findViewById(R.id.txtAdSoyad);
+        txtTelNo = (EditText)view.findViewById(R.id.txtTelNo);
+        txtEmail = (EditText)view.findViewById(R.id.txtEmail);
+        txtSifre = (EditText)view.findViewById(R.id.txtSifre);
+        txtTcNo = (EditText)view.findViewById(R.id.txtTcNo);
     }
 }

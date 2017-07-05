@@ -23,4 +23,12 @@ public class Lesson {
     public void setLessonName(String lessonName) {
         this.lessonName = lessonName;
     }
+
+    @Override
+    public String toString() {
+        return "Lesson{" +
+                "id=" + id +
+                ", lessonName='" + lessonName + '\'' +
+                '}';
+    }
 }

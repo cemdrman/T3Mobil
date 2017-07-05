@@ -4,10 +4,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import jekirdek.com.t3mobil.model.Lesson;
 import jekirdek.com.t3mobil.model.User;
 
 /**
- *
+ *This class for only and main job is json parsing
  */
 public class JsonParse {
 
@@ -38,4 +42,25 @@ public class JsonParse {
 
         return user;
     }
+
+    public ArrayList<String> getLessonList(String lessonJsonResponse){
+
+        ArrayList<String> lessons = null;
+        try {
+            JSONArray jsonArray = new JSONArray(lessonJsonResponse);
+            int jsonArrayLenght = jsonArray.length();
+            lessons = new ArrayList<>();
+            for (int i = 0; i < jsonArrayLenght; i++) {
+                lessons.add(jsonArray.getJSONObject(i).getString("name"));
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return lessons;
+    }
+
+
+
 }

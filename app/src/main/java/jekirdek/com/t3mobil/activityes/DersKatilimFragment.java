@@ -7,7 +7,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -27,6 +30,8 @@ import jekirdek.com.t3mobil.utility.RequestURL;
 public class DersKatilimFragment extends Fragment {
 
     private Spinner cmbDers;
+    private EditText txtAdSoyadSorgulama;
+    private Button btnYoklamaListele;
 
     @Nullable
     @Override
@@ -37,7 +42,52 @@ public class DersKatilimFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        init(view);
+        btnYoklamaListele.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (txtAdSoyadSorgulama.getText().equals("") || cmbDers.getSelectedItem().equals("")) {
+                    Toast.makeText(getActivity(),"Öğrenci İsmi veya Ders İsmi Eksik",Toast.LENGTH_SHORT).show();
+                }else{
+
+
+                    if (v == null) {
+                        //verilen öğrenci yok ise mesaj
+                    }else{
+
+                        //Veriler dogru ise sonuç dönecek
+                        getTümYoklamaListesi(595);
+                    }
+                }
+            }
+        });
+    }
+
+    private void getTümYoklamaListesi(int instructorId){
+        
+        String loginRequestUrl = RequestURL.baseUrl.concat(RequestURL.tümYoklamaListesiUrl).concat(String.valueOf(instructorId)).concat("\"}&date=2017-07-10");
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, loginRequestUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("response: " + response);
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HATA OLUŞTU");
+            }
+        });
+        System.out.println("request:" + stringRequest.getUrl());
+        requestQueue.add(stringRequest);
+    }
+
+    private void init(View view){
         cmbDers = (Spinner)view.findViewById(R.id.cmbDers);
+        txtAdSoyadSorgulama = (EditText)view.findViewById(R.id.txtAdSoyadSorgulama);
+        btnYoklamaListele = (Button)view.findViewById(R.id.btnYoklamaListele);
         getDersListesi();
     }
 

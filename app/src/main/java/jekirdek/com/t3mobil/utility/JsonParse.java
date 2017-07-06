@@ -7,6 +7,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import jekirdek.com.t3mobil.model.Attendence;
 import jekirdek.com.t3mobil.model.Lesson;
 import jekirdek.com.t3mobil.model.User;
 
@@ -61,6 +62,35 @@ public class JsonParse {
         return lessons;
     }
 
+    /**
+     *
+     * @param attendenceJsonResponse : tüm devamsızlık listesi
+     * @return tüm listeyi döner fakat bir parametre(öğrenci ad soyad) daha alıp sadece gerekli öğrencinin devamsızlık listesi dönmesi gerekir
+     */
+    public Attendence[] getAttendenceList(String attendenceJsonResponse){
 
+        Attendence[] attendences = null;
+
+        try {
+            JSONArray jsonArray = new JSONArray(attendenceJsonResponse);
+            int jsonArrayLenght = jsonArray.length();
+            attendences = new Attendence[jsonArrayLenght];
+            for (int i = 0; i < jsonArrayLenght; i++) {
+                attendences[i].setId(jsonArray.getJSONObject(i).getInt("id"));
+                attendences[i].setScheduleId(jsonArray.getJSONObject(i).getInt("scheduleId"));
+                attendences[i].setInstructorId(jsonArray.getJSONObject(i).getInt("instructorId"));
+                attendences[i].setStudentId(jsonArray.getJSONObject(i).getInt("studentId"));
+                attendences[i].setPresence(jsonArray.getJSONObject(i).getInt("presence"));
+                attendences[i].setStudentNameSurname(jsonArray.getJSONObject(i).getString("studentNameSurname"));
+                attendences[i].setLessonDate(jsonArray.getJSONObject(i).getString("lessonDate"));
+
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return attendences;
+    }
 
 }

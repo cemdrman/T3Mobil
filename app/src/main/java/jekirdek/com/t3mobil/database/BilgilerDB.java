@@ -28,7 +28,7 @@ public class BilgilerDB extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         Log.d("db","creating db");
         db.execSQL("CREATE TABLE " + tblName +" (id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "name TEXT, surname TEXT, gender TEXT, email TEXT," +
+                "userId Integer,name TEXT, surname TEXT, citizenId TEXT, gender TEXT, email TEXT," +
                 "password TEXT, phoneNumber TEXT, userType TEXT," +
                 "schoolName TEXT, section TEXT, class TEXT, " +
                 "grade TEXT)");
@@ -39,8 +39,10 @@ public class BilgilerDB extends SQLiteOpenHelper {
         Log.d("db","user saving");
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues values = new ContentValues();
+        values.put("userId",user.getId());
         values.put("name",user.getName());
         values.put("surname",user.getSurname());
+        values.put("citizenId",user.getCitizenId());
         values.put("gender",user.getGender());
         values.put("email",user.getEmail());
         values.put("password",user.getPassword());
@@ -61,14 +63,19 @@ public class BilgilerDB extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery(query,null);
         User user = new User();
         cursor.moveToFirst();
-        user.setId(cursor.getInt(0));
-        user.setName(cursor.getString(1));
-        user.setSurname(cursor.getString(2));
-        user.setGender(cursor.getString(3));
-        user.setEmail(cursor.getString(4));
-        user.setPassword(cursor.getString(5));
-        user.setPhoneNumber(cursor.getString(6));
-        user.setUserType(cursor.getString(7));
+        user.setId(cursor.getInt(1));
+        user.setName(cursor.getString(2));
+        user.setSurname(cursor.getString(3));
+        user.setCitizenId(cursor.getString(4));
+        user.setGender(cursor.getString(5));
+        user.setEmail(cursor.getString(6));
+        user.setPassword(cursor.getString(7));
+        user.setPhoneNumber(cursor.getString(8));
+        user.setUserType(cursor.getString(9));
+        user.setSchoolName(cursor.getString(10));
+        user.setSection(cursor.getString(11));
+        user.setClas(cursor.getString(12));
+        user.setGrade(cursor.getString(13));
 
         return user;
     }

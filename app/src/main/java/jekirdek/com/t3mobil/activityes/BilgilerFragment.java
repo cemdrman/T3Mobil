@@ -34,7 +34,12 @@ public class BilgilerFragment extends Fragment {
         init(view);
         BilgilerDB bilgilerDB = new BilgilerDB(getContext());
         User user = bilgilerDB.getUser();
+        System.out.println("db den dönenen user : " + user.toString());
         txtAdSoyad.setText(user.getName() + " " + user.getSurname());
+        txtEmail.setText(user.getEmail());
+        txtSifre.setText(user.getPassword());
+        txtTelNo.setText(user.getPhoneNumber());
+        txtTcNo.setText(user.getCitizenId());
     }
 
     private void init(View view){

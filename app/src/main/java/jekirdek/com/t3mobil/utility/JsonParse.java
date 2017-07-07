@@ -27,8 +27,10 @@ public class JsonParse {
             user.setId(jsonObject.getInt("id"));
             user.setName(jsonObject.getString("name"));
             user.setSurname(jsonObject.getString("surname"));
+            user.setCitizenId(jsonObject.getString("citizenId"));
             user.setGender(jsonObject.getString("gender"));
             user.setEmail(jsonObject.getString("email"));
+            user.setPassword(jsonObject.getString("password"));
             user.setPhoneNumber(jsonObject.getString("phoneNumber"));
             user.setUserType(jsonObject.getString("userType"));
             user.setSchoolName(jsonObject.getString("schoolName"));

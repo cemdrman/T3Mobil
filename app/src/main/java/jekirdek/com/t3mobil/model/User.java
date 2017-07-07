@@ -8,6 +8,7 @@ public class User {
     private int id;
     private String name;
     private String surname;
+    private String citizenId;
     private String gender;
     private String email;
     private String password;
@@ -40,6 +41,14 @@ public class User {
 
     public void setSurname(String surname) {
         this.surname = surname;
+    }
+
+    public String getCitizenId() {
+        return citizenId;
+    }
+
+    public void setCitizenId(String citizenId) {
+        this.citizenId = citizenId;
     }
 
     public String getGender() {
@@ -120,11 +129,12 @@ public class User {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", surname='" + surname + '\'' +
-                ", gender=" + gender +
+                ", citizenId='" + citizenId + '\'' +
+                ", gender='" + gender + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", phoneNumber='" + phoneNumber + '\'' +
-                ", userType=" + userType +
+                ", userType='" + userType + '\'' +
                 ", schoolName='" + schoolName + '\'' +
                 ", section='" + section + '\'' +
                 ", clas='" + clas + '\'' +

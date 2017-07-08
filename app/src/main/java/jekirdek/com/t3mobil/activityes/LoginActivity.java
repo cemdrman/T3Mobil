@@ -3,6 +3,7 @@ package jekirdek.com.t3mobil.activityes;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -13,22 +14,22 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import jekirdek.com.t3mobil.R;
 import jekirdek.com.t3mobil.database.BilgilerDB;
 import jekirdek.com.t3mobil.model.User;
 import jekirdek.com.t3mobil.utility.JsonParse;
+import jekirdek.com.t3mobil.utility.RequestURL;
 
 
 public class LoginActivity extends Activity {
-
 
     private JsonParse jsonParse = new JsonParse();
     private EditText txtEmail;
     private EditText txtSifre;
     private Button btnGiris;
-    //private TokenDB tokenDB;
-    private int id;
+    private static final String EMAIL_PATTERN ="^[_A-Za-z0-9-\\+]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,55 +42,37 @@ public class LoginActivity extends Activity {
             public void onClick(View v) {
                 String email = txtEmail.getText().toString();
                 String sifre = txtSifre.getText().toString();
-                if (email.equals("") || sifre.equals("")) {
+                if (!validate(email)) {
+                    Toast.makeText(getApplicationContext(), "Geçersiz Email!", Toast.LENGTH_LONG).show();
+                }else if(email.equals("") || sifre.equals("")){
                     Toast.makeText(getApplicationContext(), "Lütfen Bilgilerizi Tam Giriniz!", Toast.LENGTH_LONG).show();
                 }else{
-                    //sorun yok demektir login metodu çalışır
                     login();
-
                 }
 
             }
         });
 
-
-     /*   if (tokenDB.getRowCount() > 0) {
-            System.out.println();
-            Intent ıntent = new Intent(LoginActivity.this,MainActivity.class );
-            System.out.println("token:   " + tokenDB.getToken());
-            System.out.println("staffID: " + tokenDB.getID());
-            ıntent.putExtra("token",tokenDB.getToken());
-            ıntent.putExtra("staffID",tokenDB.getID());
-            startActivity(ıntent);
-        }else{
-            btnGiris.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    String email = txtEmail.getText().toString();
-                    String sifre = txtSifre.getText().toString();
-                    if (email.equals("") || sifre.equals("")) {
-                        Toast.makeText(getApplicationContext(), "Lütfen Bilgilerizi Tam Giriniz!", Toast.LENGTH_LONG).show();
-                    }else{
-                        //sorun yok demektir login metodu çalışır
-                        login();
-                    }
-                }
-            });
-        }*/
     }
 
     private void login(){
-        String loginRequestUrl = "http://www.jekirdek.com/t3mobil/mobileservlet.php?servletMethod=loginControl&email="+txtEmail.getText()+"&password="+txtSifre.getText();
+        String loginRequestUrl = RequestURL.baseUrl.concat(RequestURL.loginUrl).concat("&email="+txtEmail.getText()+"&password="+txtSifre.getText());
         RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, loginRequestUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
-                System.out.println("response: " + response);
-                User user = jsonParse.userJsonParser(response);
-                BilgilerDB bilgilerDB = new BilgilerDB(getApplicationContext());
-                bilgilerDB.saveUser(user);
-                Intent ıntent = new Intent(LoginActivity.this,MainActivity.class );
-                startActivity(ıntent);
+                Log.d("response: " , response);
+
+                if (response.equals("[]")) {
+                    Toast.makeText(getApplicationContext(),"Yanlış Email veya Şifre!",Toast.LENGTH_LONG).show();
+                }else{
+                    User user = jsonParse.userJsonParser(response);
+                    BilgilerDB bilgilerDB = new BilgilerDB(getApplicationContext());
+                    bilgilerDB.saveUser(user);
+                    Intent ıntent = new Intent(LoginActivity.this,MainActivity.class );
+                    startActivity(ıntent);
+                }
+
             }
         }, new Response.ErrorListener() {
             @Override
@@ -97,7 +80,7 @@ public class LoginActivity extends Activity {
                 System.out.println("HATA OLUŞTU");
             }
         });
-        System.out.println("request:" + stringRequest.getOriginUrl());
+        Log.d("request:" , stringRequest.getOriginUrl());
         requestQueue.add(stringRequest);
     }
 
@@ -106,5 +89,11 @@ public class LoginActivity extends Activity {
         txtSifre = (EditText) findViewById(R.id.password);
         btnGiris = (Button)findViewById(R.id.btnGiris);
         //tokenDB = new TokenDB(getApplicationContext());
+    }
+
+    public boolean validate(String email){
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        Matcher matcher = pattern.matcher(email);
+        return matcher.matches();
     }
 }

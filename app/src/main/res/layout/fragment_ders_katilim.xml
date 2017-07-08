@@ -15,6 +15,7 @@
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/myEditText"
             android:hint="Öğrenci Ad Soyad"
             android:id="@+id/txtAdSoyadSorgulama"/>
     </LinearLayout>
@@ -28,6 +29,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            style="@style/myTextView"
             android:text="Ders Seçin:"/>
         <Spinner
             android:layout_width="wrap_content"
@@ -45,9 +47,8 @@
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            style="@style/buttons"
             android:text="Listele"
-            android:background="@color/colorPrimaryDark"
-            android:textColor="#ffff"
             android:id="@+id/btnYoklamaListele"/>
 
     </LinearLayout>

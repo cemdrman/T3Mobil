@@ -8,4 +8,23 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+
+    <style name="buttons">
+        <item name="android:textColor">#ffff</item>
+        <item name="android:textSize">20sp</item>
+        <item name="android:background">@drawable/buttons_shape</item>
+
+    </style>
+
+    <style name="myEditText">
+        <item name="android:textColor">#000</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+    <style name="myTextView">
+        <item name="android:textColor">#000</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
 </resources>

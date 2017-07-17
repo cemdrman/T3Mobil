@@ -21,6 +21,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.List;
 
 import jekirdek.com.t3mobil.R;
+import jekirdek.com.t3mobil.model.User;
 import jekirdek.com.t3mobil.utility.JsonParse;
 import jekirdek.com.t3mobil.utility.RequestURL;
 
@@ -32,6 +33,7 @@ public class DersKatilimFragment extends Fragment {
     private Spinner cmbDers;
     private EditText txtAdSoyadSorgulama;
     private Button btnYoklamaListele;
+    private User user = null;
 
     @Nullable
     @Override
@@ -49,29 +51,65 @@ public class DersKatilimFragment extends Fragment {
                 if (txtAdSoyadSorgulama.getText().equals("") || cmbDers.getSelectedItem().equals("")) {
                     Toast.makeText(getActivity(),"Öğrenci İsmi veya Ders İsmi Eksik",Toast.LENGTH_SHORT).show();
                 }else{
+                    String[] isimSoyisim = txtAdSoyadSorgulama.getText().toString().split(" ");
+                    User user = getStudent(isimSoyisim[0],isimSoyisim[1]);
 
+                    //----ÖNEMLİ ---\\
+                    /*split metodunda tek boşluğa göre ayırma olduğu için eğer kullanıcı birden fazla boşluk girerse
+                    bu boşluk kontrol edilmeli fazla boşluk silinmelidir
+                    */
 
-                    if (v == null) {
+                    if (user == null) {
                         //verilen öğrenci yok ise mesaj
+                        System.out.println("Verilen bilgilere göre öğrenci bulunamadı");
                     }else{
 
+                        //öğrencinin dersi bilinmiyor!
+                        //getOgrenciYoklamaListesi(user.getId());
+
+                        //öğrenci bulunduktan sonra yoklama listesi dönecek
                         //Veriler dogru ise sonuç dönecek
-                        getTümYoklamaListesi(595);
+
                     }
                 }
             }
         });
     }
 
-    private void getTümYoklamaListesi(int instructorId){
-        
-        String loginRequestUrl = RequestURL.baseUrl.concat(RequestURL.tümYoklamaListesiUrl).concat(String.valueOf(instructorId)).concat("\"}&date=2017-07-10");
+    private User getStudent(String name, String surname){
+        String ogrenciAramaUrl = RequestURL.getOgrenciAramaUrl(name,surname);
+
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, loginRequestUrl, new Response.Listener<String>() {
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, ogrenciAramaUrl, new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("response: " + response);
+                JsonParse jsonParse = new JsonParse();
+                user = jsonParse.userJsonParser(response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HATA OLUŞTU");
+                //öğrenci bulunamadı hatası verilecek
+            }
+        });
+        System.out.println("request:" + stringRequest.getUrl());
+        requestQueue.add(stringRequest);
 
+        return user;
+    }
+
+    private void getOgrenciYoklamaListesi(int studentId,int lessonId){
+        String ogrenciYoklamaListesiUrl = RequestURL.getOgrenciYoklamaListesiUrl(studentId,lessonId) ;
+
+        RequestQueue requestQueue = Volley.newRequestQueue(getContext());
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, ogrenciYoklamaListesiUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("response: " + response);
+                //öğrencinin bütün yoklama listesi elimizde
+                //yoklama listesi parse edilecek
 
             }
         }, new Response.ErrorListener() {

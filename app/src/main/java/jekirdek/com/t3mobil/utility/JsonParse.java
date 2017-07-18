@@ -22,8 +22,8 @@ public class JsonParse {
         User user = new User();
 
         try {
-            JSONArray jsonUserObject = new JSONArray(userJsonResponse);
-            JSONObject jsonObject = jsonUserObject.getJSONObject(0);
+            JSONArray jsonArray = new JSONArray(userJsonResponse);
+            JSONObject jsonObject = jsonArray.getJSONObject(0);
             user.setId(jsonObject.getInt("id"));
             user.setName(jsonObject.getString("name"));
             user.setSurname(jsonObject.getString("surname"));
@@ -66,8 +66,8 @@ public class JsonParse {
 
     /**
      *
-     * @param attendenceJsonResponse : tüm devamsızlık listesi
-     * @return tüm listeyi döner fakat bir parametre(öğrenci ad soyad) daha alıp sadece gerekli öğrencinin devamsızlık listesi dönmesi gerekir
+     * @param attendenceJsonResponse : öğrencinin dönen devamsızlık listesi
+     * @return öğrencinin devamsızlık listesi döner
      */
     public Attendence[] getAttendenceList(String attendenceJsonResponse){
 

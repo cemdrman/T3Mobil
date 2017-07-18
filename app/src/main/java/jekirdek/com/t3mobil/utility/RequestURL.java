@@ -12,8 +12,9 @@ public class RequestURL {
     //public static final String tümYoklamaListesiUrl = "servletMethod=getAttendenceList&instructor={\"id\":\"";
 
     public static String getOgrenciYoklamaListesiUrl(int studentId,int lessonId){
-        String ogrenciYoklamaListesiUrl = baseUrl;
-        ogrenciYoklamaListesiUrl.concat("servletMethod=getStudentAttendenceList&student={\"id\":\""+studentId+"\"}& lesson={\"id\":\""+lessonId+"\"}");
+        String ogrenciYoklamaListesiUrl = baseUrl.concat("servletMethod=getStudentAttendenceList&student={\"id\":\""+studentId+"\"}& lesson={\"id\":\""+lessonId+"\"}");
+        System.out.println(ogrenciYoklamaListesiUrl);
+
         return ogrenciYoklamaListesiUrl;
     }
 
@@ -26,9 +27,8 @@ public class RequestURL {
      * @return
      */
     public static String getOgrenciAramaUrl(String name, String surname, String citizenId){
-        String ogrenciAramaUrl = baseUrl;
-        ogrenciAramaUrl.concat("servletMethod=searchStudents&student={\"name\":\""+name+"\",\"surname\":\""+surname+"\",\"citizenId\":\""+citizenId+"\"}");
-        ogrenciAramaUrl.toString();
+        String ogrenciAramaUrl = baseUrl.concat("servletMethod=searchStudents&student={\"name\":\""+name+"\",\"surname\":\""+surname+"\",\"citizenId\":\""+citizenId+"\"}");
+        System.out.println(ogrenciAramaUrl);
         return ogrenciAramaUrl;
     }
 
@@ -40,8 +40,9 @@ public class RequestURL {
      */
 
     public static String getOgrenciAramaUrl(String name, String surname){
-        String ogrenciAramaUrl = baseUrl;
-        ogrenciAramaUrl.concat("servletMethod=searchStudents&student={\"name\":\""+name+"\",\"surname\":\""+surname+"\"}");
+        String ogrenciAramaUrl = baseUrl.concat("servletMethod=searchStudents&student={\"name\":\""+name+"\",\"surname\":\""+surname+"\"}");
+
+        System.out.println(ogrenciAramaUrl.toString());
         return ogrenciAramaUrl;
     }
 

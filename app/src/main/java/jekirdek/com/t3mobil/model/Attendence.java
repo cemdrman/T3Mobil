@@ -5,51 +5,51 @@ package jekirdek.com.t3mobil.model;
  */
 public class Attendence {
 
-    private int id;
-    private int scheduleId;
-    private int instructorId;
-    private int studentId;
-    private int presence;
+    private String id;
+    private String scheduleId;
+    private String instructorId;
+    private String studentId;
+    private String presence;
     private String studentNameSurname;
     private String lessonDate;
 
-    public int getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
 
-    public int getScheduleId() {
+    public String getScheduleId() {
         return scheduleId;
     }
 
-    public void setScheduleId(int scheduleId) {
+    public void setScheduleId(String scheduleId) {
         this.scheduleId = scheduleId;
     }
 
-    public int getInstructorId() {
+    public String getInstructorId() {
         return instructorId;
     }
 
-    public void setInstructorId(int instructorId) {
+    public void setInstructorId(String instructorId) {
         this.instructorId = instructorId;
     }
 
-    public int getStudentId() {
+    public String getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(int studentId) {
+    public void setStudentId(String studentId) {
         this.studentId = studentId;
     }
 
-    public int getPresence() {
+    public String getPresence() {
         return presence;
     }
 
-    public void setPresence(int presence) {
+    public void setPresence(String presence) {
         this.presence = presence;
     }
 

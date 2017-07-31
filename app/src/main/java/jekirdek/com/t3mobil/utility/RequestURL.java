@@ -46,4 +46,16 @@ public class RequestURL {
         return ogrenciAramaUrl;
     }
 
+    /**
+     *
+     * @param id eğitimci id
+     * @param date günün tarihi otomatik alınmalı format : 2017-07-10 / yyyy-mm-dd
+     * @return sınıfın tüm öğrenci listesi
+     */
+    public static String getTumOgrenciListesi(int id, String date){
+        String tumOgrenciListesi = baseUrl.concat("servletMethod=getAttendenceList&instructor={\"id\":\"" + id +"\"}&date="+date);
+        System.out.println(tumOgrenciListesi.toString());
+        return tumOgrenciListesi;
+    }
+
 }

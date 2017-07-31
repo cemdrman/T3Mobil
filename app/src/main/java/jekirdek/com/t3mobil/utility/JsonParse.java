@@ -71,21 +71,36 @@ public class JsonParse {
      */
     public Attendence[] getAttendenceList(String attendenceJsonResponse){
 
+
+        /**
+         * attendences[i].setId((jsonArray.getJSONObject(i).getString("id").equals("null")  )  ? "-" : jsonArray.getJSONObject(i).getString("id"));
+         * yukarıdaki işlem hata vermekte idi çözümü yeni bir nesne oluşturarak buldum.
+         *
+         */
+
         Attendence[] attendences = null;
 
         try {
             JSONArray jsonArray = new JSONArray(attendenceJsonResponse);
             int jsonArrayLenght = jsonArray.length();
+
             attendences = new Attendence[jsonArrayLenght];
             for (int i = 0; i < jsonArrayLenght; i++) {
-                attendences[i].setId(jsonArray.getJSONObject(i).getInt("id"));
-                attendences[i].setScheduleId(jsonArray.getJSONObject(i).getInt("scheduleId"));
-                attendences[i].setInstructorId(jsonArray.getJSONObject(i).getInt("instructorId"));
-                attendences[i].setStudentId(jsonArray.getJSONObject(i).getInt("studentId"));
-                attendences[i].setPresence(jsonArray.getJSONObject(i).getInt("presence"));
-                attendences[i].setStudentNameSurname(jsonArray.getJSONObject(i).getString("studentNameSurname"));
-                attendences[i].setLessonDate(jsonArray.getJSONObject(i).getString("lessonDate"));
+                Attendence attendence = new Attendence();
 
+                /**
+                 * metodlardan null gelebildiği için one-line if kullanılarak ve bu sebepten ötürü gelen datanın 'null' kontrolünü de
+                 * attendence modelinin özelliklerini String yaparak çözüldü
+                 */
+
+                attendence.setId((jsonArray.getJSONObject(i).getString("id").equals("null")  )  ? "-" : jsonArray.getJSONObject(i).getString("id"));
+                attendence.setScheduleId( (jsonArray.getJSONObject(i).getString("scheduleId").equals("null") ) ? "-" : jsonArray.getJSONObject(i).getString("scheduleId"));
+                attendence.setInstructorId((jsonArray.getJSONObject(i).getString("instructorId").equals("null") ) ? "-" : jsonArray.getJSONObject(i).getString("instructorId"));
+                attendence.setStudentId(jsonArray.getJSONObject(i).getString("studentId").equals("null") ? "-" : jsonArray.getJSONObject(i).getString("studentId"));
+                attendence.setPresence(jsonArray.getJSONObject(i).getString("presence").equals("null") ? "-" : jsonArray.getJSONObject(i).getString("presence"));
+                attendence.setStudentNameSurname(jsonArray.getJSONObject(i).getString("studentNameSurname").equals("null") ? "-" : jsonArray.getJSONObject(i).getString("studentNameSurname"));
+                attendence.setLessonDate(jsonArray.getJSONObject(i).getString("lessonDate").equals("null") ? "-" : jsonArray.getJSONObject(i).getString("lessonDate"));
+                attendences[i] = attendence;
             }
 
         } catch (JSONException e) {

@@ -8,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
 import jekirdek.com.t3mobil.R;
@@ -20,9 +19,8 @@ import jekirdek.com.t3mobil.model.AttendeceListModel;
 public class CustomAdapter extends ArrayAdapter {
 
     private ArrayList<AttendeceListModel> dataSet;
-    Context mContext;
+    private Context mContext;
 
-    // View lookup cache
     private static class ViewHolder {
         TextView txtName;
         CheckBox checkBox;
@@ -66,8 +64,8 @@ public class CustomAdapter extends ArrayAdapter {
 
         AttendeceListModel item = getItem(position);
 
-        viewHolder.txtName.setText(item.name);
-        viewHolder.checkBox.setChecked(item.checked);
+        viewHolder.txtName.setText(item.getName());
+        viewHolder.checkBox.setChecked(item.isChecked());
 
         return result;
     }

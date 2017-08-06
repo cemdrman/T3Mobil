@@ -9,7 +9,6 @@ public class RequestURL {
     public static final String baseUrl = "http://www.jekirdek.com/t3mobil/mobileservlet.php?";
     public static final String loginUrl = "servletMethod=loginControl";
     public static final String dersListesiUrl = "servletMethod=getLessonList";
-    //public static final String tümYoklamaListesiUrl = "servletMethod=getAttendenceList&instructor={\"id\":\"";
 
     public static String getOgrenciYoklamaListesiUrl(int studentId,int lessonId){
         String ogrenciYoklamaListesiUrl = baseUrl.concat("servletMethod=getStudentAttendenceList&student={\"id\":\""+studentId+"\"}& lesson={\"id\":\""+lessonId+"\"}");
@@ -52,10 +51,17 @@ public class RequestURL {
      * @param date günün tarihi otomatik alınmalı format : 2017-07-10 / yyyy-mm-dd
      * @return sınıfın tüm öğrenci listesi
      */
-    public static String getTumOgrenciListesi(int id, String date){
+    public static String getTumOgrenciListesiUrl(int id, String date){
         String tumOgrenciListesi = baseUrl.concat("servletMethod=getAttendenceList&instructor={\"id\":\"" + id +"\"}&date="+date);
         System.out.println(tumOgrenciListesi.toString());
         return tumOgrenciListesi;
     }
+
+    public static String getYoklamaGuncellemeUrl(int id, int presence){
+        String yoklamaGunceleme = baseUrl.concat("servletMethod=updateAttendence&attendence={\"id\":\"" + id +"\",\"presence\":\"" + presence + "\"}");
+        System.out.println(yoklamaGunceleme.toString());
+        return yoklamaGunceleme;
+    }
+
 
 }

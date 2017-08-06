@@ -20,7 +20,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import jekirdek.com.t3mobil.R;
+import jekirdek.com.t3mobil.adapter.CustomAdapter;
+import jekirdek.com.t3mobil.model.AttendeceListModel;
 import jekirdek.com.t3mobil.model.Attendence;
 import jekirdek.com.t3mobil.utility.JsonParse;
 import jekirdek.com.t3mobil.utility.RequestURL;
@@ -65,9 +72,15 @@ public class YoklamaListesiFragment extends Fragment {
                     }
                     System.out.println("öğrenci listesi uzunluk " + ogrenciList.length);
 
-                    ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(),
-                            android.R.layout.simple_list_item_1, ogrenciList);
-                    tumOgrenciListView.setAdapter(adapter);
+                  //  ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, ogrenciList);
+                    ArrayList<AttendeceListModel> ogrenciler = new ArrayList<>();
+                    for (int i = 0; i < ogrenciList.length; i++) {
+                        AttendeceListModel attendeceListModel = new AttendeceListModel(ogrenciList[i],false);
+                        ogrenciler.add(attendeceListModel);
+                    }
+
+                    CustomAdapter customAdapter = new CustomAdapter(ogrenciler ,getActivity().getApplicationContext());
+                    tumOgrenciListView.setAdapter(customAdapter);
                 }else{
                     Toast.makeText(getContext(),"Öğrenci Liste Yok",Toast.LENGTH_SHORT).show();
                     System.out.println("Öğrenci Listesi Yok");

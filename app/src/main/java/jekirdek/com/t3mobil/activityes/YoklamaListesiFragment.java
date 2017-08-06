@@ -21,8 +21,11 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.lang.reflect.Array;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 import jekirdek.com.t3mobil.R;
@@ -104,6 +107,10 @@ public class YoklamaListesiFragment extends Fragment {
      * @return current date format must be yyyy-mm-dd
      */
     private String currentDate(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        System.out.println(dateFormat.format(date));
+
         return "2017-07-10";
     }
 

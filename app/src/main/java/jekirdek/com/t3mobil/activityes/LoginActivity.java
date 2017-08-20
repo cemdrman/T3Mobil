@@ -69,7 +69,7 @@ public class LoginActivity extends Activity {
                     User user = jsonParse.userJsonParser(response);
                     BilgilerDB bilgilerDB = new BilgilerDB(getApplicationContext());
                     bilgilerDB.saveUser(user);
-                    Intent ıntent = new Intent(LoginActivity.this,MainActivity.class );
+                    Intent ıntent = new Intent(LoginActivity.this,YoklamaGetirActivity.class );
                     startActivity(ıntent);
                 }
 

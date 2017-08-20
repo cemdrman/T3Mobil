@@ -6,9 +6,10 @@ package jekirdek.com.t3mobil.utility;
  */
 public class RequestURL {
 
-    public static final String baseUrl = "http://www.jekirdek.com/t3mobil/mobileservlet.php?";
+    public static final String baseUrl = "http://www.jekirdek.com/t3Deneyap/mobileservlet.php?";
     public static final String loginUrl = "servletMethod=loginControl";
     public static final String dersListesiUrl = "servletMethod=getLessonList";
+
 
     public static String getOgrenciYoklamaListesiUrl(int studentId,int lessonId){
         String ogrenciYoklamaListesiUrl = baseUrl.concat("servletMethod=getStudentAttendenceList&student={\"id\":\""+studentId+"\"}& lesson={\"id\":\""+lessonId+"\"}");
@@ -63,5 +64,10 @@ public class RequestURL {
         return yoklamaGunceleme;
     }
 
+    public static String getDeneyapUrl(){
+        String deneyapUrl = baseUrl.concat("servletMethod=getDeneyapList");
+        System.out.println(deneyapUrl);
+        return deneyapUrl;
+    }
 
 }

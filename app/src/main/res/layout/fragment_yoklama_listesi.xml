@@ -4,25 +4,24 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/fr_yoklama_listesi">
-    <ListView  android:id="@+id/list"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+        <ListView  android:id="@+id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="2">
-    </ListView>
+        </ListView>
 
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="Kaydet"
-        android:paddingBottom="10dp"
-        style="@style/buttons"
-        android:id="@+id/btnYoklamaKaydet"/>
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.9"/>
-
+        <Button
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Kaydet"
+            android:paddingBottom="10dp"
+            style="@style/buttons"
+            android:id="@+id/btnYoklamaKaydet"/>
+    </LinearLayout>
 
 </LinearLayout>
-

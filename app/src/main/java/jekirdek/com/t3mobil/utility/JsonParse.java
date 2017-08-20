@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import jekirdek.com.t3mobil.model.Attendence;
+import jekirdek.com.t3mobil.model.DeneYap;
 import jekirdek.com.t3mobil.model.Lesson;
 import jekirdek.com.t3mobil.model.User;
 
@@ -108,6 +109,27 @@ public class JsonParse {
         }
 
         return attendences;
+    }
+
+    public DeneYap[] getDeneyapList(String responce){
+
+        DeneYap[] deneYapListesi = null;
+        try {
+            JSONArray jsonArray = new JSONArray(responce);
+            int jsonArrayLenght = jsonArray.length();
+            deneYapListesi = new DeneYap[jsonArrayLenght];
+            for (int i = 0; i < jsonArrayLenght; i++) {
+                DeneYap deneYap = new DeneYap();
+
+                deneYap.setId(jsonArray.getJSONObject(i).getInt("id"));
+                deneYap.setName(jsonArray.getJSONObject(i).getString("name"));
+                deneYapListesi[i] = deneYap;
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return deneYapListesi;
     }
 
 }

@@ -1,6 +1,7 @@
 package jekirdek.com.t3mobil.activityes;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CalendarView;
 import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Spinner;
@@ -21,15 +23,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
 import jekirdek.com.t3mobil.R;
-import jekirdek.com.t3mobil.adapter.CustomAdapter;
-import jekirdek.com.t3mobil.model.AttendeceListModel;
-import jekirdek.com.t3mobil.model.Attendence;
+import jekirdek.com.t3mobil.adapter.DatePickerFragment;
 import jekirdek.com.t3mobil.model.DeneYap;
 import jekirdek.com.t3mobil.utility.JsonParse;
 import jekirdek.com.t3mobil.utility.RequestURL;
@@ -39,8 +37,6 @@ import jekirdek.com.t3mobil.utility.RequestURL;
  * Created by cem
  */
 public class YoklamaAyarFragment extends Fragment {
-
-    //
 
     private Spinner cmbDeneyap;
     private Spinner cmbDersler;
@@ -76,21 +72,48 @@ public class YoklamaAyarFragment extends Fragment {
             }
         });
 
-        /*datePicker.setTitle("Tarih Seçiniz");
-        datePicker.setButton(DatePickerDialog.BUTTON_POSITIVE, "Ayarla", datePicker);
-        datePicker.setButton(DatePickerDialog.BUTTON_NEGATIVE, "İptal", datePicker);
-        datePicker.show();*/
+        datePicker.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDatePicker();
+            }
+        });
+
 
 
     }
 
+    private void showDatePicker() {
+        DatePickerFragment date = new DatePickerFragment();
+        /**
+         * Set Up Current Date Into dialog
+         */
+        Calendar calender = Calendar.getInstance();
+        Bundle args = new Bundle();
+        args.putInt("year", calender.get(Calendar.YEAR));
+        args.putInt("month", calender.get(Calendar.MONTH));
+        args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
+        date.setArguments(args);
+        /**
+         * Set Call back to capture selected date
+         */
+        date.setCallBack(ondate);
+        date.show(getActivity().getFragmentManager(),"Date");
+    }
 
+    DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
+            Toast.makeText(getContext(), String.valueOf(year) + "-" + String.valueOf(monthOfYear) + "-" + String.valueOf(dayOfMonth),
+                    Toast.LENGTH_LONG).show();
+        }
+    };
 
     private void init(View view){
         cmbDeneyap = (Spinner) view.findViewById(R.id.cmbDeneyap);
         cmbDersler = (Spinner) view.findViewById(R.id.cmbDers1);
-        datePicker = (DatePicker) view.findViewById(R.id.datePicker);
         btnYoklamaListesiGetir = (Button) view.findViewById(R.id.btnYoklamaListesiGetir);
+        datePicker = (DatePicker) view.findViewById(R.id.datepicler);
     }
 
     /**

@@ -55,11 +55,14 @@
                 android:layout_height="wrap_content"
                 style="@style/myTextView"
                 android:text="Tarih: "/>
+
             <DatePicker
                 android:layout_width="match_parent"
-                android:layout_height="100dp"
-                android:id="@+id/datePicker">
+                android:layout_height="match_parent"
+                android:id="@+id/datepicler">
+
             </DatePicker>
+
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"

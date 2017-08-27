@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     private ViewPager viewPager;
     private DrawerLayout drawer;
     private TabLayout tabLayout;
-    private String[] pageTitle = {"Yoklama Listesi", "Öğrenci Ders Katılımı", "Bilgilerim"};
+    private String[] pageTitle = {"Yoklama Al", "Devamsızlık", "Bilgilerim"};
     private int[] tabIcons = {R.drawable.ic_assignment_turned_in_black_24dp,R.drawable.ic_insert_chart_black_24dp,R.drawable.ic_person_black_24dp};
 
     @Override

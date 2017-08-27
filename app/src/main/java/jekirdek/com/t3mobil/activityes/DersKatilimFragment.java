@@ -19,6 +19,12 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import jekirdek.com.t3mobil.R;
@@ -33,7 +39,8 @@ import jekirdek.com.t3mobil.utility.RequestURL;
 public class DersKatilimFragment extends Fragment {
 
     private Spinner cmbDers;
-    private EditText txtAdSoyadSorgulama;
+    private EditText txtAdSorgulama;
+    private EditText txtSoyadSorgulama;
     private Button btnYoklamaListele;
     private ListView lstViewAttendece;
     private JsonParse jsonParse = new JsonParse();
@@ -52,37 +59,42 @@ public class DersKatilimFragment extends Fragment {
         btnYoklamaListele.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String adSoyad = txtAdSoyadSorgulama.getText().toString();
+                String ad = txtAdSorgulama.getText().toString();
+                String soyad = txtSoyadSorgulama.getText().toString();
                 String secilenDers = cmbDers.getSelectedItem().toString();
-                if (adSoyad.equals("") || secilenDers.equals("")) {
+
+                if (ad.equals("") || secilenDers.equals("")) {
                     Toast.makeText(getActivity(),"Öğrenci İsmi veya Ders İsmi Eksik",Toast.LENGTH_SHORT).show();
                 }else{
-                    String[] isimSoyisim = adSoyad.split(" ");
-                    getStudent(isimSoyisim[0],isimSoyisim[1]);
-
-                    //----ÖNEMLİ ---\\
-                    /*split metodunda tek boşluğa göre ayırma olduğu için eğer kullanıcı birden fazla boşluk girerse
-                    bu boşluk kontrol edilmeli fazla boşluk silinmelidir
-                    */
-
-                    if (user == null) {
-                        //verilen öğrenci yok ise mesaj
-                        //Toast.makeText(getActivity(),"Verilen bilgilere göre öğrenci bulunamadı",Toast.LENGTH_SHORT).show();
-                        System.out.println("user null");
-                    }else{
-
-                        getOgrenciYoklamaListesi(user.getId(),cmbDers.getSelectedItemPosition());
-                    }
+                    findStudent(ad,soyad);
                 }
+
             }
         });
     }
 
-    private void getStudent(String name, String surname){
-        String ogrenciAramaUrl = RequestURL.getOgrenciAramaUrl(name,surname);
+    private void init(View view){
+        cmbDers = (Spinner)view.findViewById(R.id.cmbDers);
+        txtAdSorgulama = (EditText)view.findViewById(R.id.txtAdSorgulama);
+        txtSoyadSorgulama = (EditText)view.findViewById(R.id.txtSoyadSorgulama);
+        btnYoklamaListele = (Button)view.findViewById(R.id.btnYoklamaListele);
+        lstViewAttendece = (ListView) view.findViewById(R.id.ogrenciYoklamaList);
+        getDersListesi();
+    }
+
+    private void findStudent(String name, String surname){
+
+        String ogrenciAramaUrl;
+
+        if (surname.equals(" ")) {
+            ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name);
+        }else{
+            ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name,surname);
+        }
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
-        StringRequest stringRequest = new StringRequest(Request.Method.GET, ogrenciAramaUrl, new Response.Listener<String>() {
+
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, ogrenciAramaUrl , new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
                 System.out.println("response: " + response);
@@ -92,29 +104,32 @@ public class DersKatilimFragment extends Fragment {
                 }else {
                     user = jsonParse.userJsonParser(response);
                     System.out.println("user bulundu");
+                    if (user == null) {
+                        Toast.makeText(getActivity(),"Verilen bilgilere göre öğrenci bulunamadı",Toast.LENGTH_SHORT).show();
+                    }else{
+                        user.toString();
+                        getStudentAttenceList(user.getId(),cmbDers.getSelectedItemPosition());
+                    }
                 }
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("HATA OLUŞTU");
-                //öğrenci bulunamadı hatası verilecek
             }
         });
         System.out.println("request:" + stringRequest.getUrl());
         requestQueue.add(stringRequest);
-
-
     }
 
     /**
      * Parametrelere göre bulduğu Yoklama listesini listview'a yazar
      *
      * @param studentId isminden ogrenciId bulunur ve bu methoda geçilir
-     * @param lessonId ders combobaxından seçilen ders adına göre dersId bulunur
+     * @param lessonId ders combobaxından seçilen ders adına göre dersId bulunur(+1 eklenir)
      */
-    private void getOgrenciYoklamaListesi(int studentId,int lessonId){
-        String ogrenciYoklamaListesiUrl = RequestURL.getOgrenciYoklamaListesiUrl(studentId,lessonId) ;
+    private void getStudentAttenceList(int studentId,int lessonId){
+        String ogrenciYoklamaListesiUrl = RequestURL.getOgrenciYoklamaListesiUrl(studentId,lessonId + 1);
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
         StringRequest stringRequest = new StringRequest(Request.Method.GET, ogrenciYoklamaListesiUrl, new Response.Listener<String>() {
@@ -122,24 +137,62 @@ public class DersKatilimFragment extends Fragment {
             public void onResponse(String response) {
                 System.out.println("response: " + response);
 
-                //dolu ise listView boşaltılmalı!
+                /**
+                 * farklı aramalar için liste boşaltılıyor
+                 */
+                ArrayAdapter<String> listViewBosalt = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, new String[]{});
+                lstViewAttendece.setAdapter(listViewBosalt);
+
                 if (jsonParse.getAttendenceList(response).length > 0) {
                     Attendence[] attendences = jsonParse.getAttendenceList(response);
                     String[] yoklamaTarihList = new String[attendences.length];
                     for (int i = 0;i < attendences.length; i++ ) {
-                        yoklamaTarihList[i] = attendences[i].getLessonDate();
+
+
+                        String dt = attendences[i].getLessonDate();
+                        int dayOfWeek = 0;
+                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                        try{
+                            Date dateFrom=format.parse(dt);
+                            Calendar c = Calendar.getInstance();
+                            c.setTime(dateFrom);
+                            dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+
+
+                        switch (dayOfWeek){
+                            case Calendar.MONDAY :
+                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Pazartesi" + " Gelmedi";
+                                break;
+                            case Calendar.TUESDAY :
+                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Salı" + " Gelmedi";
+                                break;
+                            case Calendar.WEDNESDAY :
+                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Çarşamba" + " Gelmedi";
+                                break;
+                            case Calendar.THURSDAY :
+                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Perşembe" + " Gelmedi";
+                                break;
+                            case Calendar.FRIDAY :
+                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Cuma" + " Gelmedi";
+                                break;
+                            case Calendar.SATURDAY :
+                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Cumartesi" + " Gelmedi";
+                                break;
+                            case Calendar.SUNDAY :
+                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Pazar" + " Gelmedi";
+                                break;
+                        }
+                        System.out.println(yoklamaTarihList[i]);
                     }
-                    ArrayAdapter ogrenciYoklamaAdapter = new ArrayAdapter<String>(getActivity().getApplicationContext(),android.R.layout.simple_list_item_1,yoklamaTarihList);
+                    ArrayAdapter<String> ogrenciYoklamaAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, yoklamaTarihList);
                     lstViewAttendece.setAdapter(ogrenciYoklamaAdapter);
                 }else{
+                    Toast.makeText(getActivity(),"Öğrencinin Devamsızlığı Yoktur",Toast.LENGTH_SHORT).show();
                     System.out.println("öğrencinin devamsızlığı yoktur");
                 }
-
-
-
-                //öğrencinin bütün yoklama listesi elimizde
-                //yoklama listesi parse edilecek
-
             }
         }, new Response.ErrorListener() {
             @Override
@@ -149,14 +202,6 @@ public class DersKatilimFragment extends Fragment {
         });
         System.out.println("request:" + stringRequest.getUrl());
         requestQueue.add(stringRequest);
-    }
-
-    private void init(View view){
-        cmbDers = (Spinner)view.findViewById(R.id.cmbDers);
-        txtAdSoyadSorgulama = (EditText)view.findViewById(R.id.txtAdSoyadSorgulama);
-        btnYoklamaListele = (Button)view.findViewById(R.id.btnYoklamaListele);
-        lstViewAttendece = (ListView) view.findViewById(R.id.ogrenciYoklamaList);
-        getDersListesi();
     }
 
     private void getDersListesi(){
@@ -169,14 +214,10 @@ public class DersKatilimFragment extends Fragment {
                 System.out.println("response: " + response);
 
                 List<String> lessons = jsonParse.getLessonList(response);
-
-                // Creating adapter for spinner
                 ArrayAdapter<String> dataAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_item, lessons);
 
-                // Drop down layout style - list view with radio button
                 dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
-                // attaching data adapter to spinner
                 cmbDers.setAdapter(dataAdapter);
 
             }

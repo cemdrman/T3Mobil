@@ -1,60 +1,140 @@
 package jekirdek.com.t3mobil.activityes;
 
 import android.app.Activity;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.DatePicker;
-import android.widget.Spinner;
+import android.widget.ListView;
+import android.widget.Toast;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.Volley;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import jekirdek.com.t3mobil.R;
+import jekirdek.com.t3mobil.adapter.CustomAdapter;
+import jekirdek.com.t3mobil.model.AttendeceListModel;
+import jekirdek.com.t3mobil.model.Attendence;
+import jekirdek.com.t3mobil.utility.JsonParse;
+import jekirdek.com.t3mobil.utility.RequestURL;
 
 /**
  * Created by cem on 20.08.2017.
  */
 public class YoklamaGetirActivity extends Activity {
 
-    private Spinner cmbDeneyap;
-    private Spinner cmbDersler;
-    private DatePicker datePicker;
-    private Button btnYoklamaListesiGetir;
+    private ListView tumOgrenciListView;
+    private Button btnKaydet;
+    private Attendence[] attendences;
+    private CustomAdapter customAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_yoklama_listesi_getir);
         init();
+        String deneyap = getIntent().getExtras().getString("deneyap");
+        String ders = getIntent().getExtras().getString("ders");
+        String tarih = getIntent().getExtras().getString("tarih");
+        getTumSinifListe(deneyap,ders,tarih);
 
-        btnYoklamaListesiGetir.setOnClickListener(new View.OnClickListener() {
+        btnKaydet.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent ıntent = new Intent(YoklamaGetirActivity.this,MainActivity.class);
-                //bilgiler alınacak
-                startActivity(ıntent);
 
+                /**
+                 * NameSurname ve Id yi map de tutuyoruz ki listviewdan aldığımız name-surname
+                 * göre id alabilelim ve sonuç olarak request atabilelim
+                 */
+
+                HashMap<String,String> nameIdMap = new HashMap<String, String>();
+                for (int i = 0; i < attendences.length; i++) {
+                    nameIdMap.put(attendences[i].getStudentNameSurname(),attendences[i].getId());
+                }
+
+                for (int i = 0; i < customAdapter.getCount(); i++) {
+                    String studentID = nameIdMap.get(customAdapter.getItem(i).getName());
+                    System.out.println("isChecked: " + customAdapter.getItem(i).isChecked());
+                    if (customAdapter.getItem(i).isChecked()) {
+                        yoklamaAl(Integer.valueOf(studentID), 1);
+                    }else{
+                        yoklamaAl(Integer.valueOf(studentID), 0);
+                    }
+                }
+
+                Toast.makeText(getApplicationContext(),"Yoklama Kaydedildi",Toast.LENGTH_SHORT);
             }
         });
+
     }
 
     private void init(){
-        cmbDeneyap = (Spinner) findViewById(R.id.cmbDeneyap);
-        cmbDersler = (Spinner) findViewById(R.id.cmbDers1);
-        datePicker = (DatePicker) findViewById(R.id.datePicker);
-        btnYoklamaListesiGetir = (Button) findViewById(R.id.btnYoklamaListesiGetir);
+        tumOgrenciListView = (ListView) findViewById(R.id.list);
+        btnKaydet = (Button) findViewById(R.id.btnYoklamaKaydet);
     }
 
-    /**
-     * format must be yyyy-mm-dd
-     * @return
-     */
-    private String selectedDate(){
-        int day = datePicker.getDayOfMonth();
-        int mounth = datePicker.getMonth();
-        int year = datePicker.getYear();
-        String date = year + "-" + mounth + "-" + day;
-        return date;
+    private void yoklamaAl(int studentId,int presence){
+        String yoklamaGuncellemeUrl = RequestURL.getYoklamaGuncellemeUrl(studentId,presence);
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.GET, yoklamaGuncellemeUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("dönenen sonuc: " + response);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        requestQueue.add(request);
     }
-    
+
+    private void getTumSinifListe(String deneyap,String ders,String tarih){
+
+        String tumOgrenciListesiUrl = RequestURL.getTumOgrenciListesiUrl(1, 1, "2017-07-10");
+        RequestQueue requestQueue = Volley.newRequestQueue(getApplication().getApplicationContext());
+        StringRequest request = new StringRequest(Request.Method.GET, tumOgrenciListesiUrl, new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println("response: " + response);
+                JsonParse jsonParse = new JsonParse();
+                attendences = jsonParse.getAttendenceList(response);
+                if (jsonParse.getAttendenceList(response).length > 0) {
+
+                    String[] ogrenciList = new String[attendences.length];
+                    for (int i = 0;i < attendences.length; i++ ) {
+                        ogrenciList[i] = attendences[i].getStudentNameSurname();
+                    }
+
+                    ArrayList<AttendeceListModel> ogrenciler = new ArrayList<>();
+                    for (int i = 0; i < ogrenciList.length; i++) {
+                        AttendeceListModel attendeceListModel = new AttendeceListModel(ogrenciList[i],false);
+                        ogrenciler.add(attendeceListModel);
+                    }
+
+                    customAdapter = new CustomAdapter(ogrenciler, getApplicationContext());
+                    tumOgrenciListView.setAdapter(customAdapter);
+                }else{
+                    Toast.makeText(getApplicationContext(),"Öğrenci Liste Yok",Toast.LENGTH_SHORT).show();
+                    System.out.println("Öğrenci Listesi Yok");
+                }
+
+
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("HATA OLUŞTU");
+            }
+        });
+        System.out.println("request:" + request.getUrl());
+        requestQueue.add(request);
+
+    }
 
 }

@@ -4,16 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#ffff"
+    android:padding="10dp"
     android:id="@+id/fr_bilgilerim">
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_height="wrap_content">
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             style="@style/myTextView"
-            android:text="İsim:"/>
+            android:text="İsim"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -22,13 +22,12 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_height="wrap_content">
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             style="@style/myTextView"
-            android:text="Soyisim:"/>
+            android:text="Soyisim"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -38,12 +37,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+        >
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             style="@style/myTextView"
-            android:text="Email:"/>
+            android:text="Email"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -54,12 +53,12 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp">
+       >
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             style="@style/myTextView"
-            android:text="Tel NO:"/>
+            android:text="Tel NO"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -69,13 +68,12 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_height="wrap_content">
         <TextView
             android:layout_width="70dp"
             android:layout_height="wrap_content"
             style="@style/myTextView"
-            android:text="Şifre:"/>
+            android:text="Şifre"/>
         <EditText
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -84,8 +82,7 @@
     </LinearLayout>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:padding="10dp">
+        android:layout_height="wrap_content" >
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

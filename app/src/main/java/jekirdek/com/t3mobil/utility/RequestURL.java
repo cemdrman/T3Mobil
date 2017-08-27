@@ -12,14 +12,14 @@ public class RequestURL {
 
 
     public static String getOgrenciYoklamaListesiUrl(int studentId,int lessonId){
-        String ogrenciYoklamaListesiUrl = baseUrl.concat("servletMethod=getStudentAttendenceList&student={\"id\":\""+studentId+"\"}& lesson={\"id\":\""+lessonId+"\"}");
+        String ogrenciYoklamaListesiUrl = baseUrl.concat("servletMethod=getStudentAttendenceList&student={\"id\":\""+studentId+"\"}&lesson={\"id\":\""+lessonId+"\"}");
         System.out.println(ogrenciYoklamaListesiUrl);
 
         return ogrenciYoklamaListesiUrl;
     }
 
     /**
-     * eğer student hakkında bütün bilgiler biliniyorsa bu method çağrıltı
+     * eger student hakkında bütün bilgiler biliniyorsa bu method çağrıltı
      * overload edilmiş olan bu method eğer citizenId boş ise urlden çıkarılıp sunulabilir!
      * @param name
      * @param surname
@@ -41,19 +41,30 @@ public class RequestURL {
 
     public static String getOgrenciAramaUrl(String name, String surname){
         String ogrenciAramaUrl = baseUrl.concat("servletMethod=searchStudents&student={\"name\":\""+name+"\",\"surname\":\""+surname+"\"}");
-
         System.out.println(ogrenciAramaUrl.toString());
         return ogrenciAramaUrl;
     }
 
     /**
      *
-     * @param id eğitimci id
+     * @param name
+     * @return
+     */
+
+    public static String getOgrenciAramaUrl(String name){
+        String ogrenciAramaUrl = baseUrl.concat("servletMethod=searchStudents&student={\"name\":\"" + name + "\"}");
+        System.out.println(ogrenciAramaUrl.toString());
+        return ogrenciAramaUrl;
+    }
+
+    /**
+     *
+     * @param deneyapId eğitimci id
      * @param date günün tarihi otomatik alınmalı format : 2017-07-10 / yyyy-mm-dd
      * @return sınıfın tüm öğrenci listesi
      */
-    public static String getTumOgrenciListesiUrl(int id, String date){
-        String tumOgrenciListesi = baseUrl.concat("servletMethod=getAttendenceList&instructor={\"id\":\"" + id +"\"}&date="+date);
+    public static String getTumOgrenciListesiUrl(int deneyapId, int lessonId, String date){
+        String tumOgrenciListesi = baseUrl.concat("servletMethod=getAttendenceList&deneyap={\"id\":\"" + deneyapId +"\"}&lesson={\"id\":\"" + lessonId +"\"}&date="+date);
         System.out.println(tumOgrenciListesi.toString());
         return tumOgrenciListesi;
     }

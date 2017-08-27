@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.DatePicker;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.android.volley.Request;
@@ -32,7 +33,7 @@ import jekirdek.com.t3mobil.utility.RequestURL;
 /**
  * Created by cem
  */
-public class YoklamaListesiFragment extends Fragment {
+public class YoklamaAyarFragment extends Fragment {
 
     private ListView tumOgrenciListView;
     private Button btnKaydet;
@@ -98,7 +99,11 @@ public class YoklamaListesiFragment extends Fragment {
     }
 
     private void getTumSinifListe(){
-        String tumOgrenciListesiUrl = RequestURL.getTumOgrenciListesiUrl(595,currentDate());
+        String deneyap = getActivity().getIntent().getExtras().getString("deneyap");
+        String ders = getActivity().getIntent().getExtras().getString("ders");
+        String tarih = getActivity().getIntent().getExtras().getString("tarih");
+
+        String tumOgrenciListesiUrl = RequestURL.getTumOgrenciListesiUrl(1, 1, "2017-07-10");
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplication().getApplicationContext());
         StringRequest request = new StringRequest(Request.Method.GET, tumOgrenciListesiUrl, new Response.Listener<String>() {
             @Override
@@ -137,18 +142,6 @@ public class YoklamaListesiFragment extends Fragment {
         System.out.println("request:" + request.getUrl());
         requestQueue.add(request);
 
-    }
-
-    /**
-     * System date
-     * @return current date format must be yyyy-mm-dd
-     */
-    private String currentDate(){
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        System.out.println(dateFormat.format(date));
-
-        return "2017-07-10";
     }
 
     private void init(View view){

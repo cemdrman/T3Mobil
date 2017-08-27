@@ -17,11 +17,12 @@ import jekirdek.com.t3mobil.model.User;
  */
 public class BilgilerFragment extends Fragment {
 
-    private EditText txtAdSoyad;
+    private EditText txtAd;
+    private EditText txtSoyad;
     private EditText txtTelNo;
     private EditText txtEmail;
     private EditText txtSifre;
-    private EditText txtTcNo;
+    private BilgilerDB bilgilerDB;
 
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -32,21 +33,27 @@ public class BilgilerFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
-        BilgilerDB bilgilerDB = new BilgilerDB(getContext());
-        User user = bilgilerDB.getUser();
-        System.out.println("db den dönenen user : " + user.toString());
-        txtAdSoyad.setText(user.getName() + " " + user.getSurname());
-        txtEmail.setText(user.getEmail());
-        txtSifre.setText(user.getPassword());
-        txtTelNo.setText(user.getPhoneNumber());
-        txtTcNo.setText(user.getCitizenId());
+        getUserInfo();
     }
 
     private void init(View view){
-        txtAdSoyad = (EditText)view.findViewById(R.id.txtAdSoyad);
+        txtAd = (EditText)view.findViewById(R.id.txtAd);
+        txtSoyad = (EditText)view.findViewById(R.id.txtSoyad);
         txtTelNo = (EditText)view.findViewById(R.id.txtTelNo);
         txtEmail = (EditText)view.findViewById(R.id.txtEmail);
         txtSifre = (EditText)view.findViewById(R.id.txtSifre);
-        txtTcNo = (EditText)view.findViewById(R.id.txtTcNo);
+        bilgilerDB = new BilgilerDB(getContext());
     }
+
+    private void getUserInfo(){
+        User user = bilgilerDB.getUser();
+        System.out.println("db den dönenen user : " + user.toString());
+        txtAd.setText(user.getName());
+        txtSoyad.setText(user.getSurname());
+        txtEmail.setText(user.getEmail());
+        txtSifre.setText("");
+        txtTelNo.setText(user.getPhoneNumber());
+    }
+
+
 }

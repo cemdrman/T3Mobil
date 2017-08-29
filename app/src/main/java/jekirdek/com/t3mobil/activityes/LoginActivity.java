@@ -78,6 +78,7 @@ public class LoginActivity extends Activity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("HATA OLUŞTU");
+                Toast.makeText(getApplicationContext(),"Giriş Yapılamadı!\n Bağlantı ve Bilgilerinizi Kontrol Ediniz",Toast.LENGTH_LONG).show();
             }
         });
         Log.d("request:" , stringRequest.getOriginUrl());

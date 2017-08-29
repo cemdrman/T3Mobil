@@ -1,7 +1,6 @@
 package jekirdek.com.t3mobil.activityes;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -11,10 +10,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CalendarView;
 import android.widget.DatePicker;
-import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -23,7 +21,11 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import jekirdek.com.t3mobil.R;
@@ -42,6 +44,8 @@ public class YoklamaAyarFragment extends Fragment {
     private Spinner cmbDersler;
     private DatePicker datePicker;
     private Button btnYoklamaListesiGetir;
+    private Button btnOpenCalander;
+    private TextView dateOfCalendar;
     private JsonParse jsonParse = new JsonParse();
 
     @Nullable
@@ -56,6 +60,9 @@ public class YoklamaAyarFragment extends Fragment {
         init(view);
         getDeneyapListesi();
         getDersListesi();
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        setDateToTextView(dateFormat.format(date));
         btnYoklamaListesiGetir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -72,15 +79,17 @@ public class YoklamaAyarFragment extends Fragment {
             }
         });
 
-        datePicker.setOnClickListener(new View.OnClickListener() {
+        btnOpenCalander.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 showDatePicker();
             }
         });
+    }
 
-
-
+    private void setDateToTextView(String date){
+        dateOfCalendar.setText("");
+        dateOfCalendar.setText(date);
     }
 
     private void showDatePicker() {
@@ -91,7 +100,7 @@ public class YoklamaAyarFragment extends Fragment {
         Calendar calender = Calendar.getInstance();
         Bundle args = new Bundle();
         args.putInt("year", calender.get(Calendar.YEAR));
-        args.putInt("month", calender.get(Calendar.MONTH));
+        args.putInt("month", calender.get(Calendar.MONTH) + 1);
         args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
         date.setArguments(args);
         /**
@@ -104,6 +113,7 @@ public class YoklamaAyarFragment extends Fragment {
     DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
+            setDateToTextView(year + "-" + monthOfYear + "-" + dayOfMonth);
             Toast.makeText(getContext(), String.valueOf(year) + "-" + String.valueOf(monthOfYear) + "-" + String.valueOf(dayOfMonth),
                     Toast.LENGTH_LONG).show();
         }
@@ -113,7 +123,9 @@ public class YoklamaAyarFragment extends Fragment {
         cmbDeneyap = (Spinner) view.findViewById(R.id.cmbDeneyap);
         cmbDersler = (Spinner) view.findViewById(R.id.cmbDers1);
         btnYoklamaListesiGetir = (Button) view.findViewById(R.id.btnYoklamaListesiGetir);
-        datePicker = (DatePicker) view.findViewById(R.id.datepicler);
+        datePicker= new DatePicker(getContext());
+        btnOpenCalander = (Button) view.findViewById(R.id.btnOpenCalendar);
+        dateOfCalendar = (TextView) view.findViewById(R.id.dateOfCalendar);
     }
 
     /**

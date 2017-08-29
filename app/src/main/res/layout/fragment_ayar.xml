@@ -18,10 +18,10 @@
             android:padding="10dp"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 style="@style/myTextView"
-                android:text="Deneyap: "/>
+                android:text="Deneyap"/>
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -34,10 +34,10 @@
             android:padding="10dp"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 style="@style/myTextView"
-                android:text="Ders: "/>
+                android:text="Ders"/>
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -51,15 +51,15 @@
             android:padding="10dp"
             android:orientation="horizontal">
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="80dp"
                 android:layout_height="wrap_content"
                 style="@style/myTextView"
-                android:text="Tarih: "/>
+                android:text="Tarih"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="2"
+                android:layout_weight="3"
                 style="@style/myTextView"
                 android:id="@+id/dateOfCalendar"/>
             <Button

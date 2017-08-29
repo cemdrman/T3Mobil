@@ -51,14 +51,17 @@ public class YoklamaGetirActivity extends Activity {
                  * göre id alabilelim ve sonuç olarak request atabilelim
                  */
 
-                HashMap<String,String> nameIdMap = new HashMap<String, String>();
+                HashMap<String,String> nameIdMap = new HashMap<>();
                 for (int i = 0; i < attendences.length; i++) {
                     nameIdMap.put(attendences[i].getStudentNameSurname(),attendences[i].getId());
                 }
 
                 for (int i = 0; i < customAdapter.getCount(); i++) {
+                    System.out.println(customAdapter.getItem(i).getName() + " " + customAdapter.getItem(i).isChecked());
+                }
+
+                for (int i = 0; i < customAdapter.getCount(); i++) {
                     String studentID = nameIdMap.get(customAdapter.getItem(i).getName());
-                    System.out.println("isChecked: " + customAdapter.getItem(i).isChecked());
                     if (customAdapter.getItem(i).isChecked()) {
                         yoklamaAl(Integer.valueOf(studentID), 1);
                     }else{
@@ -66,7 +69,8 @@ public class YoklamaGetirActivity extends Activity {
                     }
                 }
 
-                Toast.makeText(getApplicationContext(),"Yoklama Kaydedildi",Toast.LENGTH_SHORT);
+                Toast.makeText(getApplicationContext(),"Yoklama Kaydedildi",Toast.LENGTH_LONG).show();
+                finish();
             }
         });
 
@@ -106,30 +110,40 @@ public class YoklamaGetirActivity extends Activity {
                 attendences = jsonParse.getAttendenceList(response);
                 if (jsonParse.getAttendenceList(response).length > 0) {
 
-                    String[] ogrenciList = new String[attendences.length];
-                    for (int i = 0;i < attendences.length; i++ ) {
-                        ogrenciList[i] = attendences[i].getStudentNameSurname();
-                    }
-
+                    /**
+                     * dizinin iki boyutlu olmasının nedeni hem öğrenci bilgisi hemde devamsızlık durumunun tutulması için.
+                     * liste tekrar açıldığında önceden yoklama alındıysa tekrar gelmesi sağlanır
+                     */
                     ArrayList<AttendeceListModel> ogrenciler = new ArrayList<>();
-                    for (int i = 0; i < ogrenciList.length; i++) {
-                        AttendeceListModel attendeceListModel = new AttendeceListModel(ogrenciList[i],false);
+                    for (int i = 0; i < attendences.length; i++) {
+                        /**
+                         * getPresence() devamsızlık durumunu verir
+                         * 0 -> gelmediğini
+                         * 1 -> geldiğini belirtir
+                         */
+                        AttendeceListModel attendeceListModel ;
+                        if (attendences[i].getPresence().equals("0")) {
+                            attendeceListModel = new AttendeceListModel(attendences[i].getStudentNameSurname(),false);
+                        }else{
+                            attendeceListModel = new AttendeceListModel(attendences[i].getStudentNameSurname(),true);
+                        }
+
                         ogrenciler.add(attendeceListModel);
                     }
 
-                    customAdapter = new CustomAdapter(ogrenciler, getApplicationContext());
+                    customAdapter = new CustomAdapter( getApplicationContext(), ogrenciler);
                     tumOgrenciListView.setAdapter(customAdapter);
                 }else{
                     Toast.makeText(getApplicationContext(),"Öğrenci Liste Yok",Toast.LENGTH_SHORT).show();
                     System.out.println("Öğrenci Listesi Yok");
                 }
 
-
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("HATA OLUŞTU");
+                Toast.makeText(getApplicationContext(),"Listeye Ulaşılamadı!",Toast.LENGTH_SHORT).show();
             }
         });
         System.out.println("request:" + request.getUrl());

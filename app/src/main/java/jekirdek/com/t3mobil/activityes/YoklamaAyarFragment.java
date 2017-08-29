@@ -25,7 +25,6 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import jekirdek.com.t3mobil.R;
@@ -51,7 +50,7 @@ public class YoklamaAyarFragment extends Fragment {
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_ayar, container, false);
+        return inflater.inflate(R.layout.fragment_yoklama_ayar, container, false);
     }
 
     @Override
@@ -115,7 +114,7 @@ public class YoklamaAyarFragment extends Fragment {
         public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
             setDateToTextView(year + "-" + monthOfYear + "-" + dayOfMonth);
             Toast.makeText(getContext(), String.valueOf(year) + "-" + String.valueOf(monthOfYear) + "-" + String.valueOf(dayOfMonth),
-                    Toast.LENGTH_LONG).show();
+                    Toast.LENGTH_SHORT).show();
         }
     };
 

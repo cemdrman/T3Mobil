@@ -62,16 +62,39 @@ public class DersKatilimFragment extends Fragment {
                 String ad = txtAdSorgulama.getText().toString();
                 String soyad = txtSoyadSorgulama.getText().toString();
                 String tc = txtTcSorgulama.getText().toString();
-                String secilenDers = cmbDers.getSelectedItem().toString();
 
-                if (tc.equals(" ") || ad.equals("") || secilenDers.equals("")) {
-                    Toast.makeText(getActivity(),"Öğrenci Tc, İsim veya Ders İsmi Eksik",Toast.LENGTH_SHORT).show();
+                if (!tc.isEmpty() || !ad.isEmpty()) {
+                    String url = urlControl(ad,soyad,tc);
+                    if (url != null) {
+                        findStudent(url);
+                    }
                 }else{
-                    findStudent(ad,soyad,tc);
+                    Toast.makeText(getActivity(),"Öğrenci Tc, İsim veya Ders İsmi Eksik!",Toast.LENGTH_SHORT).show();
                 }
-
             }
         });
+    }
+
+    private String urlControl(String name, String surname, String citizenId){
+
+        String ogrenciAramaUrl = null;
+
+        if (citizenId.isEmpty()) {
+            if (surname.isEmpty()) {
+                ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name);
+                System.out.println("isim ile arama çağrıldı");
+            }else{
+                ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name,surname);
+            }
+        }else{
+            if (citizenId.length() == 11) {
+                ogrenciAramaUrl = RequestURL.getOgrenciAramaUrl(name,surname,citizenId);
+                System.out.println("tc ile arama çağrıldı");
+            }else{
+                Toast.makeText(getActivity(),"Eksik TC No!",Toast.LENGTH_SHORT).show();
+            }
+        }
+        return ogrenciAramaUrl;
     }
 
     private void init(View view){
@@ -83,20 +106,7 @@ public class DersKatilimFragment extends Fragment {
         lstViewAttendece = (ListView) view.findViewById(R.id.ogrenciYoklamaList);
     }
 
-    private void findStudent(String name, String surname, String citizenId){
-
-        String ogrenciAramaUrl;
-
-        if (citizenId.equals(" ")) {
-            if (surname.equals(" ")) {
-                ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name);
-            }else{
-                ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name,surname);
-            }
-        }else{
-            ogrenciAramaUrl = RequestURL.getOgrenciAramaUrl(name,surname,citizenId);
-        }
-
+    private void findStudent(String ogrenciAramaUrl){
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 

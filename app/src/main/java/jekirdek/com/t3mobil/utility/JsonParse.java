@@ -96,7 +96,6 @@ public class JsonParse {
 
                 attendence.setId((jsonArray.getJSONObject(i).getString("id").equals("null")  )  ? "-" : jsonArray.getJSONObject(i).getString("id"));
                 attendence.setScheduleId( (jsonArray.getJSONObject(i).getString("scheduleId").equals("null") ) ? "-" : jsonArray.getJSONObject(i).getString("scheduleId"));
-               // attendence.setInstructorId((jsonArray.getJSONObject(i).getString("instructorId").equals("null") ) ? "-" : jsonArray.getJSONObject(i).getString("instructorId"));
                 attendence.setStudentId(jsonArray.getJSONObject(i).getString("studentId").equals("null") ? "-" : jsonArray.getJSONObject(i).getString("studentId"));
                 attendence.setPresence(jsonArray.getJSONObject(i).getString("presence").equals("null") ? "-" : jsonArray.getJSONObject(i).getString("presence"));
                 attendence.setStudentNameSurname(jsonArray.getJSONObject(i).getString("studentNameSurname").equals("null") ? "-" : jsonArray.getJSONObject(i).getString("studentNameSurname"));

@@ -6,11 +6,11 @@ package jekirdek.com.t3mobil.model;
 public class AttendeceListModel {
 
     private String name;
-    private boolean checked;
+    private boolean isChecked;
 
     public AttendeceListModel(String name, boolean checked) {
         this.name = name;
-        this.checked = checked;
+        this.isChecked = checked;
     }
 
     public String getName() {
@@ -22,10 +22,10 @@ public class AttendeceListModel {
     }
 
     public boolean isChecked() {
-        return checked;
+        return isChecked;
     }
 
     public void setChecked(boolean checked) {
-        this.checked = checked;
+        this.isChecked = checked;
     }
 }

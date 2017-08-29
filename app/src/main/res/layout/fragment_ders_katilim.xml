@@ -17,6 +17,20 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             style="@style/myEditText"
+            android:hint="Öğrenci Tc No"
+            android:id="@+id/txtTcSorgulama"/>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="10dp"
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/myEditText"
             android:hint="Öğrenci İsim"
             android:id="@+id/txtAdSorgulama"/>
     </LinearLayout>

@@ -20,11 +20,9 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import jekirdek.com.t3mobil.R;
@@ -41,6 +39,7 @@ public class DersKatilimFragment extends Fragment {
     private Spinner cmbDers;
     private EditText txtAdSorgulama;
     private EditText txtSoyadSorgulama;
+    private EditText txtTcSorgulama;
     private Button btnYoklamaListele;
     private ListView lstViewAttendece;
     private JsonParse jsonParse = new JsonParse();
@@ -56,17 +55,19 @@ public class DersKatilimFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         init(view);
+        getDersListesi();
         btnYoklamaListele.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String ad = txtAdSorgulama.getText().toString();
                 String soyad = txtSoyadSorgulama.getText().toString();
+                String tc = txtTcSorgulama.getText().toString();
                 String secilenDers = cmbDers.getSelectedItem().toString();
 
-                if (ad.equals("") || secilenDers.equals("")) {
-                    Toast.makeText(getActivity(),"Öğrenci İsmi veya Ders İsmi Eksik",Toast.LENGTH_SHORT).show();
+                if (tc.equals(" ") || ad.equals("") || secilenDers.equals("")) {
+                    Toast.makeText(getActivity(),"Öğrenci Tc, İsim veya Ders İsmi Eksik",Toast.LENGTH_SHORT).show();
                 }else{
-                    findStudent(ad,soyad);
+                    findStudent(ad,soyad,tc);
                 }
 
             }
@@ -77,20 +78,25 @@ public class DersKatilimFragment extends Fragment {
         cmbDers = (Spinner)view.findViewById(R.id.cmbDers);
         txtAdSorgulama = (EditText)view.findViewById(R.id.txtAdSorgulama);
         txtSoyadSorgulama = (EditText)view.findViewById(R.id.txtSoyadSorgulama);
+        txtTcSorgulama = (EditText) view.findViewById(R.id.txtTcSorgulama);
         btnYoklamaListele = (Button)view.findViewById(R.id.btnYoklamaListele);
         lstViewAttendece = (ListView) view.findViewById(R.id.ogrenciYoklamaList);
-        getDersListesi();
     }
 
-    private void findStudent(String name, String surname){
+    private void findStudent(String name, String surname, String citizenId){
 
         String ogrenciAramaUrl;
 
-        if (surname.equals(" ")) {
-            ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name);
+        if (citizenId.equals(" ")) {
+            if (surname.equals(" ")) {
+                ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name);
+            }else{
+                ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name,surname);
+            }
         }else{
-            ogrenciAramaUrl  = RequestURL.getOgrenciAramaUrl(name,surname);
+            ogrenciAramaUrl = RequestURL.getOgrenciAramaUrl(name,surname,citizenId);
         }
+
 
         RequestQueue requestQueue = Volley.newRequestQueue(getContext());
 

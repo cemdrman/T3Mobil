@@ -21,6 +21,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -161,49 +162,57 @@ public class DersKatilimFragment extends Fragment {
 
                 if (jsonParse.getAttendenceList(response).length > 0) {
                     Attendence[] attendences = jsonParse.getAttendenceList(response);
-                    String[] yoklamaTarihList = new String[attendences.length];
-                    for (int i = 0;i < attendences.length; i++ ) {
 
+                    ArrayList<String> yoklamaTarihList = new ArrayList<>();
+                    for (int i = 0; i < attendences.length; i++ ) {
 
-                        String dt = attendences[i].getLessonDate();
-                        int dayOfWeek = 0;
-                        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                        try{
-                            Date dateFrom=format.parse(dt);
-                            Calendar c = Calendar.getInstance();
-                            c.setTime(dateFrom);
-                            dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-                        } catch (Exception e) {
-                            e.printStackTrace();
+                        if (attendences[i].getPresence().equals("0")) {
+                            String dt = attendences[i].getLessonDate();
+                            int dayOfWeek = 0;
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+                            try{
+                                Date dateFrom=format.parse(dt);
+                                Calendar c = Calendar.getInstance();
+                                c.setTime(dateFrom);
+                                dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+
+                            switch (dayOfWeek){
+                                case Calendar.MONDAY :
+                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Pazartesi" + " Gelmedi" );
+                                    break;
+                                case Calendar.TUESDAY :
+                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Salı" + " Gelmedi" );
+                                    break;
+                                case Calendar.WEDNESDAY :
+                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Çarşamba" + " Gelmedi");
+                                    break;
+                                case Calendar.THURSDAY :
+                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Perşembe" + " Gelmedi");
+                                    break;
+                                case Calendar.FRIDAY :
+                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Cuma" + " Gelmedi");
+                                    break;
+                                case Calendar.SATURDAY :
+                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Cumartesi" + " Gelmedi");
+                                    break;
+                                case Calendar.SUNDAY :
+                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Pazar" + " Gelmedi");
+                                    break;
+                            }
+
                         }
 
-
-                        switch (dayOfWeek){
-                            case Calendar.MONDAY :
-                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Pazartesi" + " Gelmedi";
-                                break;
-                            case Calendar.TUESDAY :
-                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Salı" + " Gelmedi";
-                                break;
-                            case Calendar.WEDNESDAY :
-                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Çarşamba" + " Gelmedi";
-                                break;
-                            case Calendar.THURSDAY :
-                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Perşembe" + " Gelmedi";
-                                break;
-                            case Calendar.FRIDAY :
-                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Cuma" + " Gelmedi";
-                                break;
-                            case Calendar.SATURDAY :
-                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Cumartesi" + " Gelmedi";
-                                break;
-                            case Calendar.SUNDAY :
-                                yoklamaTarihList[i] = attendences[i].getLessonDate() +" Pazar" + " Gelmedi";
-                                break;
-                        }
-                        System.out.println(yoklamaTarihList[i]);
                     }
-                    ArrayAdapter<String> ogrenciYoklamaAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, yoklamaTarihList);
+                    String[] devamsizlikList = new String[yoklamaTarihList.size()];
+                    for (int i = 0; i < yoklamaTarihList.size(); i++) {
+                        System.out.println(yoklamaTarihList.get(i));
+                        devamsizlikList[i] = yoklamaTarihList.get(i);
+                    }
+
+                    ArrayAdapter<String> ogrenciYoklamaAdapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, android.R.id.text1, devamsizlikList);
                     lstViewAttendece.setAdapter(ogrenciYoklamaAdapter);
                 }else{
                     Toast.makeText(getActivity(),"Öğrencinin Devamsızlığı Yoktur",Toast.LENGTH_SHORT).show();

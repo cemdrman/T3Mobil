@@ -204,7 +204,6 @@ public class DersKatilimFragment extends Fragment {
                             }
 
                         }
-
                     }
                     String[] devamsizlikList = new String[yoklamaTarihList.size()];
                     for (int i = 0; i < yoklamaTarihList.size(); i++) {

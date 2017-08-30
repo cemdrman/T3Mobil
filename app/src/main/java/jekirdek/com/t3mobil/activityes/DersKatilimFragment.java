@@ -166,43 +166,12 @@ public class DersKatilimFragment extends Fragment {
                     ArrayList<String> yoklamaTarihList = new ArrayList<>();
                     for (int i = 0; i < attendences.length; i++ ) {
 
+                        String date = attendences[i].getLessonDate();
+
                         if (attendences[i].getPresence().equals("0")) {
-                            String dt = attendences[i].getLessonDate();
-                            int dayOfWeek = 0;
-                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
-                            try{
-                                Date dateFrom=format.parse(dt);
-                                Calendar c = Calendar.getInstance();
-                                c.setTime(dateFrom);
-                                dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-
-                            switch (dayOfWeek){
-                                case Calendar.MONDAY :
-                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Pazartesi" + " Gelmedi" );
-                                    break;
-                                case Calendar.TUESDAY :
-                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Salı" + " Gelmedi" );
-                                    break;
-                                case Calendar.WEDNESDAY :
-                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Çarşamba" + " Gelmedi");
-                                    break;
-                                case Calendar.THURSDAY :
-                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Perşembe" + " Gelmedi");
-                                    break;
-                                case Calendar.FRIDAY :
-                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Cuma" + " Gelmedi");
-                                    break;
-                                case Calendar.SATURDAY :
-                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Cumartesi" + " Gelmedi");
-                                    break;
-                                case Calendar.SUNDAY :
-                                    yoklamaTarihList.add( attendences[i].getLessonDate() +" Pazar" + " Gelmedi");
-                                    break;
-                            }
-
+                            yoklamaTarihList.add( attendences[i].getLessonDate() +" " + haftahGunEslestir(date) + " Gelmedi" );
+                        }else{
+                            yoklamaTarihList.add( attendences[i].getLessonDate() +" " + haftahGunEslestir(date) + " Geldi" );
                         }
                     }
                     String[] devamsizlikList = new String[yoklamaTarihList.size()];
@@ -226,6 +195,40 @@ public class DersKatilimFragment extends Fragment {
         });
         System.out.println("request:" + stringRequest.getUrl());
         requestQueue.add(stringRequest);
+    }
+
+    private String haftahGunEslestir(String date){
+
+        String haftaninGunu = "";
+        int dayOfWeek = 0;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+        try{
+            Date dateFrom=format.parse(date);
+            Calendar c = Calendar.getInstance();
+            c.setTime(dateFrom);
+            dayOfWeek = c.get(Calendar.DAY_OF_WEEK);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        switch (dayOfWeek){
+            case Calendar.MONDAY : haftaninGunu = "Pazartesi";
+                break;
+            case Calendar.TUESDAY : haftaninGunu ="Salı";
+                break;
+            case Calendar.WEDNESDAY : haftaninGunu = "Çarşamba";
+                break;
+            case Calendar.THURSDAY : haftaninGunu = "Perşembe";
+                break;
+            case Calendar.FRIDAY : haftaninGunu = "Cuma";
+                break;
+            case Calendar.SATURDAY :haftaninGunu = "Cumartesi";
+                break;
+            case Calendar.SUNDAY : haftaninGunu = "Pazar";
+                break;
+        }
+
+        return haftaninGunu;
     }
 
     private void getDersListesi(){

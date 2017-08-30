@@ -22,6 +22,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -59,9 +60,8 @@ public class YoklamaAyarFragment extends Fragment {
         init(view);
         getDeneyapListesi();
         getDersListesi();
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        Date date = new Date();
-        setDateToTextView(dateFormat.format(date));
+
+        setDateToTextView(getCurrentDate());
         btnYoklamaListesiGetir.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -84,6 +84,12 @@ public class YoklamaAyarFragment extends Fragment {
                 showDatePicker();
             }
         });
+    }
+
+    private String getCurrentDate(){
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        return dateFormat.format(date);
     }
 
     private void setDateToTextView(String date){
@@ -112,9 +118,25 @@ public class YoklamaAyarFragment extends Fragment {
     DatePickerDialog.OnDateSetListener ondate = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
-            setDateToTextView(year + "-" + monthOfYear + "-" + dayOfMonth);
-            Toast.makeText(getContext(), String.valueOf(year) + "-" + String.valueOf(monthOfYear) + "-" + String.valueOf(dayOfMonth),
-                    Toast.LENGTH_SHORT).show();
+
+            String selectedDateFromCalendar = year + "-" + monthOfYear + "-" + dayOfMonth;
+            Date currentDate = null;
+            Date selectedDate = null;
+            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+            try {
+                currentDate = dateFormat.parse(getCurrentDate());
+                selectedDate = dateFormat.parse(selectedDateFromCalendar);
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
+            if (selectedDate.after(currentDate)) {
+                Toast.makeText(getContext(), "Bulunduğunuz Tarihten İlerisini Seçemezsiniz!", Toast.LENGTH_SHORT).show();
+            }else{
+                setDateToTextView(dateFormat.format(selectedDate));
+                Toast.makeText(getContext(), dateFormat.format(selectedDate), Toast.LENGTH_SHORT).show();
+            }
         }
     };
 

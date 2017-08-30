@@ -105,7 +105,7 @@ public class YoklamaAyarFragment extends Fragment {
         Calendar calender = Calendar.getInstance();
         Bundle args = new Bundle();
         args.putInt("year", calender.get(Calendar.YEAR));
-        args.putInt("month", calender.get(Calendar.MONTH) + 1);
+        args.putInt("month", calender.get(Calendar.MONTH));
         args.putInt("day", calender.get(Calendar.DAY_OF_MONTH));
         date.setArguments(args);
         /**
@@ -119,7 +119,7 @@ public class YoklamaAyarFragment extends Fragment {
         @Override
         public void onDateSet(DatePicker view, int year, int monthOfYear,int dayOfMonth) {
 
-            String selectedDateFromCalendar = year + "-" + monthOfYear + "-" + dayOfMonth;
+            String selectedDateFromCalendar = year + "-" + (monthOfYear + 1) + "-" + dayOfMonth;
             Date currentDate = null;
             Date selectedDate = null;
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
@@ -154,10 +154,7 @@ public class YoklamaAyarFragment extends Fragment {
      * @return
      */
     private String getSelectedDate(){
-        int day = datePicker.getDayOfMonth();
-        int mounth = datePicker.getMonth();
-        int year = datePicker.getYear();
-        String date = year + "-" + mounth + "-" + day;
+        String date = (String) dateOfCalendar.getText();
         return date;
     }
 
